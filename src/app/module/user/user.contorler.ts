@@ -1,59 +1,49 @@
 import catchAsync from '../../../utils/catchAsync';
-import pick from '../../../utils/pick';
-import sendResponse from '../../../utils/sendResponse';
-import { userFilterableFields } from './user.constant';
-import { userservise } from './user.service';
+import sendResponse from "../../../utils/sendResponse";
+import { userservise } from "./user.service";
 
 const createUser = catchAsync(async (req, res) => {
   console.log(req.body);
-  const { user, userProfile } = await userservise.createUserIntoDB(req.body);
+  const result = await userservise.createUserIntoDB(req.body);
   sendResponse(res, {
     statusCode: 201,
     success: true,
-    message: 'User registered successfully',
-    data: { ...user, userProfile },
+    message: "User registered successfully",
+    data: result,
   });
 });
-
-const getdonorUser = catchAsync(async (req, res) => {
-  const filters = pick(req.query, userFilterableFields);
-  const options = pick(req.query, ['limit', 'page', 'sortBy', 'sortOrder'])
-  const result = await userservise.getdonorUserIntoDB(filters, options);
+const createHR = catchAsync(async (req, res) => {
+  const result = await userservise.createHRIntoDB(req.body);
+  sendResponse(res, {
+    statusCode: 201,
+    success: true,
+    message: "HR registered successfully",
+    data: result,
+  });
+});
+const LoginHR = catchAsync(async (req, res) => {
+  const result = await userservise.HRLogin(req.body);
   sendResponse(res, {
     statusCode: 200,
     success: true,
-    message: 'Donors successfully found',
+    message: "HR Login successfully",
     data: result,
   });
 });
 
-const getUserProfile = catchAsync(async (req, res) => {
-  const result = await userservise.getUserProfileIntoDB(req.user);
+const GetUser = catchAsync(async (req, res) => {
+  const result = await userservise.GetuserInToDB();
   sendResponse(res, {
-    statusCode: 201,
+    statusCode: 200,
     success: true,
-    message: 'Profile retrieved successfully',
+    message: "USER GET successfully",
     data: result,
   });
 });
-
-const updateUserProfile = catchAsync(async (req, res) => {
-  const user = req.user
-  const UpdateData = req.body
-  const result = await userservise.UpdateUserProfileIntoDB(user, UpdateData);
-  sendResponse(res, {
-    statusCode: 201,
-    success: true,
-    message: 'User profile updated successfully',
-    data: result,
-  });
-});
-
-
 
 export const UserControllers = {
   createUser,
-  getdonorUser,
-  getUserProfile,
-  updateUserProfile,
+  createHR,
+  LoginHR,
+  GetUser,
 };

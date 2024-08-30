@@ -1,30 +1,12 @@
 import z from 'zod';
 const createUser = z.object({
-  password: z.string({
-    required_error: "Password is required",
-  }),
-  name: z.string({
-    required_error: "Name is required",
-  }),
-  email: z
-    .string({
-      required_error: "Email is required",
-    })
-    .email("Invalid email"),
-  status: z.enum(["ACTIVE", "BlOCKED"]).optional(),
-  bloodType: z.enum([
-    "A_POSITIVE",
-    "B_POSITIVE",
-    "A_NEGATIVE",
-    "B_NEGATIVE",
-    "AB_POSITIVE",
-    "AB_NEGATIVE",
-    "O_POSITIVE",
-    "O_NEGATIVE",
-  ]),
-
-  location: z.string(),
-  availability: z.boolean().default(true),
+  name: z.string().min(3).max(20),
+  email: z.string().email(),
+  address: z.string().min(3).max(20),
+  number: z.string().min(3).max(20),
+  collageName: z.string().min(3).max(20),
+  collageAddress: z.string().min(3).max(20),
+  resume: z.string(),
 });
 
 
